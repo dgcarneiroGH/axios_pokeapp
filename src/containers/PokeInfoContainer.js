@@ -13,7 +13,10 @@ class PokeInfoContainer extends Component {
         this.state = {
             pokemonDescription: "",
             pokeName: "",
-            pokeId: ""
+            pokeId: "",
+            height: "",
+            weight: "",
+            types: []
         }
 
     }
@@ -24,6 +27,7 @@ class PokeInfoContainer extends Component {
         const pokeId = match.params.pokeIndex;
         const pokeName = match.params.pokeName;
         const pokeDescriptionUrl = `${process.env.REACT_APP_POKE_API_BASE_URL}pokemon-species/${pokeId}/`;
+        this.getPokeStats();
         axios.get(pokeDescriptionUrl)
             .then(res => {
                 const { flavor_text_entries } = res.data;
@@ -35,17 +39,35 @@ class PokeInfoContainer extends Component {
             });
     }
 
+    getPokeStats() {
+        const { match } = this.props;
+        const pokeId = match.params.pokeIndex;
+        axios.get(`${process.env.REACT_APP_POKE_API_BASE_URL}pokemon/${pokeId}/`)
+            .then(res => {
+                const { height, weight, types } = res.data;
+                this.setState({
+                    height,
+                    weight,
+                    types
+                });
+            })
+    }
+
     render() {
         let url = `${process.env.REACT_APP_POKEMON_ART}`;
-        const { pokemonDescription, pokeName, pokeId } = this.state;
+        const { pokemonDescription, pokeName, pokeId, height, weight, types } = this.state;
 
         return (
             <>
                 <AppNav />
                 <PokeDescription
+                    id={pokeId}
                     name={pokeName}
                     pokeImage={`${url}${pokeId}.png?raw=true`}
                     description={pokemonDescription}
+                    height={height}
+                    weight={weight}
+                    types={types}
                 />
             </>
         );

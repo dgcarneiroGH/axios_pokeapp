@@ -11,7 +11,12 @@ function List({ pokeData }) {
                     let url = "https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/other/official-artwork/";
                     let pokeIndex = pokemon.url.split('/')[pokemon.url.split('/').length - 2];
 
-                    return <PokeCard key={index} to={`/poke-info/${pokeIndex}/${pokemon.name}`} name={pokemon.name} image={`${url}${pokeIndex}.png?raw=true`} />
+                    return <PokeCard
+                        key={index}
+                        to={`/poke-info/${pokeIndex}/${pokemon.name}`}
+                        id={pokeIndex}
+                        name={pokemon.name}
+                        image={`${url}${pokeIndex}.png?raw=true`} />
                 })}
             </Grid>
         </Fragment>
